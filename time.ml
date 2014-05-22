@@ -106,14 +106,6 @@ let schedTime param dag workflow =
 	
 	(*We use the equations from the paper now.*)
 	for i = 0 to ntasks -1 do
-		if i > 0 then
-			begin
-				tabZik.(i).(i-1) <- 1. -. tabZikNoFaults.(i);
-				for k = 0 to i-2 do
-					tabZik.(i).(i-1) <- tabZik.(i).(i-1) -. tabZik.(i).(k)
-				done;
-			end;
-		
 		
 		for k = 0 to i - 2 do (* where the faults happen *)
 			let sum = ref 0. in
@@ -125,6 +117,15 @@ let schedTime param dag workflow =
 			tabZik.(i).(k) <- exp (-. param.lambda *. !sum) *. tabZik.(k+1).(k);
 
 		done;
+
+		if i > 0 then
+			begin
+				tabZik.(i).(i-1) <- 1. -. tabZikNoFaults.(i);
+				for k = 0 to i-2 do
+					tabZik.(i).(i-1) <- tabZik.(i).(i-1) -. tabZik.(i).(k)
+				done;
+			end;
+
 	
 	done;
 	(* END Where we compute the values for Zik.*)
