@@ -9,7 +9,7 @@ open Time
 
 (* A default DAG to try the code as it comes along. This is a binary tree.*)
 let bintree_default =
-	let ntasks = 10 in
+	let ntasks = 6 in
 	let tabTaskInit = Array.make ntasks {id=0;w=5.;c=1.;r=1.} in
 	let tabParentsInit = Array.make ntasks [] in
 	let tabChildrenInit = Array.make ntasks [] in
@@ -26,9 +26,9 @@ let bintree_default =
 		computeWS temp
 
 
-let wf1 = bfs bintree_default
-let t1 = schedTime {lambda=0.01; d=1.} bintree_default wf1
-let _ = Printf.printf "t_bfs = %f\n" t1
+(*let wf1 = bfs bintree_default*)
+(*let t1 = schedTime {lambda=0.01; d=1.} bintree_default wf1*)
+(*let _ = Printf.printf "t_bfs = %f\n" t1*)
 
 let wf2 = dfs bintree_default
 let t2 = schedTime {lambda=0.01; d=1.} bintree_default wf2

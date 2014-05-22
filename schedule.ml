@@ -64,7 +64,7 @@ let bfs dag =
 		if (List.for_all (fun x -> snd result.sched.(x)) dag.tabParents.(taskId)) then 
 		begin
 			result.sched.(taskId) <- (!current,true);
-			result.order.(!current) <- (taskId,true);
+			result.order.(!current) <- (taskId,false);
 			List.iter (fun x-> Queue.add x queueTBS) dag.tabChildren.(taskId);
 			incr current;
 		end
