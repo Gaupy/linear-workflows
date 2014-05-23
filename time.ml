@@ -12,7 +12,7 @@ let expectedTime param w c r =
 		exp (lambda *. r) *. (1. /. lambda +. (expect d)) *. (exp (lambda*. (w +. c)) -. 1.)
 
 
-let rec traverse dag workflow l i k tabDone =(* l,i,k are the (l,i,k)th tasks in the order of the workflow! *)
+let rec traverse dag workflow l i k tabDone ant_k =	(* l,i,k are the (l,i,k)th tasks in the order of the workflow! ant_k is a bool that is considering the special case where we are studying a needed predecessor of k.*)
 	let ntasks = Array.length dag.tabTask in
 	let ldag = indTaskWF2DAG workflow l in
 	match tabDone.(i).(k).(l) with
@@ -20,17 +20,15 @@ let rec traverse dag workflow l i k tabDone =(* l,i,k are the (l,i,k)th tasks in
 		begin
 			for r = i+1 to ntasks - 1 do
 				tabDone.(r).(k).(l) <- 0;
-				printf "i=%d, k=%d, l=%d <-0 \n" r k l;
 			done;
-			printf "i=%d, k=%d, l=%d " i k l;
 			if l < k then
 				begin
-					if isCkptWF workflow l then (printf "caca";tabDone.(i).(k).(l) <- 2)
-					else (printf "<-1\n"; tabDone.(i).(k).(l) <- 1; List.iter (fun x -> traverse dag workflow (indTaskDAG2WF workflow x) i k tabDone) dag.tabParents.(ldag))
+					if isCkptWF workflow l then (tabDone.(i).(k).(l) <- (if ant_k then 3 else 2))
+					else (tabDone.(i).(k).(l) <- (if ant_k then 3 else 1); List.iter (fun x -> traverse dag workflow (indTaskDAG2WF workflow x) i k tabDone ant_k) dag.tabParents.(ldag))
 				end
-			else (printf "<-0\n"; tabDone.(i).(k).(l) <- 0)
+			else (tabDone.(i).(k).(l) <- 0)
 		end
-		| 0 | 1 | 2 -> ()
+		| 0 | 1 | 2 | 3 -> ()
 		| _ -> failwith "should never happen"
 
 
@@ -47,13 +45,11 @@ let findWikRik dag workflow k = (*k is the kth task in the order of the workflow
 	let wk = Array.make ntasks 0. in
 	let rk = Array.make ntasks 0. in
 	for r = k+1 to ntasks -1 do
-		printf "i=%d, k=%d, l=%d <- 0 \n" r k k;
 		tabDone.(r).(k).(k) <- 0 (* there is a failure during the execution of k, but k was executed successfully *)
 	done;
 	for i = k to ntasks -1 do
-		List.iter (fun x -> traverse dag workflow (indTaskDAG2WF workflow x) i k tabDone) dag.tabParents.(indTaskWF2DAG workflow i);
+		List.iter (fun x -> traverse dag workflow (indTaskDAG2WF workflow x) i k tabDone (i = k)) dag.tabParents.(indTaskWF2DAG workflow i);
 		for j = 0 to k-1 do
-			printf "tabDone.(%d).(%d).(%d)=%d\n" i k j tabDone.(i).(k).(j);
 			match tabDone.(i).(k).(j) with
 				| 1 -> (wk.(i) <- wk.(i) +. dag.tabTask.(indTaskWF2DAG workflow j).w)(*; printf "i=%d-j=%d\n" i j*)
 				| 2 -> (rk.(i) <- rk.(i) +. dag.tabTask.(indTaskWF2DAG workflow j).r)
@@ -73,15 +69,15 @@ let schedTime param dag workflow =
 	let tabRik = Array.make_matrix ntasks ntasks 0. in
 	let eXi = Array.make ntasks 0. in (* This array is not necessary, but it is for debug. *)
 	for k = 0 to ntasks -1 do
-		printf "pivot : %d: \n" k;
+(*		printf "pivot : %d: \n" k;*)
 		let wk,rk = findWikRik dag workflow k in
 		for i = 0 to ntasks -1 do
 			tabWik.(i).(k) <- wk.(i);
 			tabRik.(i).(k) <- rk.(i);
 		done; 
-		printf "\n";
+(*		printf "\n";*)
 	done;
-	print_matrix tabWik;
+(*	print_matrix tabWik;*)
 	
 	
 	
@@ -135,7 +131,7 @@ let schedTime param dag workflow =
 		for k = 0 to i-1 do
 			temp := !temp +. tabZik.(i).(k)
 		done;
-		printf "sum Z.(%d) = %f\n" i (!temp);
+(*		printf "sum Z.(%d) = %f\n" i (!temp);*)
 	done;
 
 		
@@ -167,7 +163,6 @@ let schedTime param dag workflow =
 		done
 	done;
 
-	
 	print_workflow_expect workflow eXi;
 	!result
 

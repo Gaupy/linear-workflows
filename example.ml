@@ -26,9 +26,9 @@ let bintree_default =
 		computeWS temp
 
 
-(*let wf1 = bfs bintree_default*)
-(*let t1 = schedTime {lambda=0.01; d=1.} bintree_default wf1*)
-(*let _ = Printf.printf "t_bfs = %f\n" t1*)
+let wf1 = bfs bintree_default
+let t1 = schedTime {lambda=0.01; d=1.} bintree_default wf1
+let _ = Printf.printf "t_bfs = %f\n" t1
 
 let wf2 = dfs bintree_default
 let t2 = schedTime {lambda=0.01; d=1.} bintree_default wf2
