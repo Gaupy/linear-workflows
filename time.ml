@@ -3,6 +3,8 @@ open Printf
 open Def
 open Schedule
 open Tools
+open Checkpoints
+
 
 let expect d = d
 

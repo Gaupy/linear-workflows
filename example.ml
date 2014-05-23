@@ -3,8 +3,8 @@ open Printf
 open Def
 open Tools
 open Schedule
+open Checkpoints
 open Time
-
 
 
 (* A default DAG to try the code as it comes along. This is a binary tree.*)
