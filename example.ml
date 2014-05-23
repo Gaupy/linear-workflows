@@ -9,7 +9,7 @@ open Time
 
 (* A default DAG to try the code as it comes along. This is a binary tree.*)
 let bintree_default =
-	let ntasks = 6 in
+	let ntasks = 50 in
 	let tabTaskInit = Array.make ntasks {id=0;w=5.;c=1.;r=1.} in
 	let tabParentsInit = Array.make ntasks [] in
 	let tabChildrenInit = Array.make ntasks [] in
@@ -26,12 +26,30 @@ let bintree_default =
 		computeWS temp
 
 
-let wf1 = bfs bintree_default
-let t1 = schedTime {lambda=0.01; d=1.} bintree_default wf1
-let _ = Printf.printf "t_bfs = %f\n" t1
+let _ = 
+	let wf1 = bfs bintree_default in
+	let t1 = schedTime {lambda=0.01; d=1.} bintree_default wf1 in
+	Printf.printf "t_bfs = %f\n" t1
 
-let wf2 = dfs bintree_default
-let t2 = schedTime {lambda=0.01; d=1.} bintree_default wf2
-let _ = Printf.printf "t_dfs = %f\n" t2
+let _ =
+	let wf2 = dfs bintree_default in
+	let t2 = schedTime {lambda=0.01; d=1.} bintree_default wf2 in
+	Printf.printf "t_dfs = %f\n" t2
+
+let _ =
+	let wf_temp = dfs bintree_default in
+	let wf2 = ckptall bintree_default wf_temp in
+	let t2 = schedTime {lambda=0.01; d=1.} bintree_default wf2 in
+	Printf.printf "t_dfs = %f\n" t2
+
+let _ =
+	let wf_temp = dfs bintree_default in
+	let wf2 = ckptper bintree_default wf_temp 3. in
+	let t2 = schedTime {lambda=0.01; d=1.} bintree_default wf2 in
+	Printf.printf "t_dfs = %f\n" t2
+
+
+
+
 
 
