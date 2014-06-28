@@ -6,7 +6,7 @@
 %token LBRACE RBRACE LHOOK RHOOK SEMICOLON ARROW EQUAL QUOTE
 %token <string> STRING
 %token <int> INT
-%token<float> FL
+%token <float> FL
 
 
 %type<Def.spec> parse
@@ -15,20 +15,16 @@
 %%
 
 parse:
-| STRING STRING LBRACE specs RBRACE { $5 }
+| STRING STRING LBRACE specs RBRACE { $4 }
 
 specs:
  | task SEMICOLON specs { let (ts,dp) = $3 in ($1::ts,dp) }
- | edges { [],$1 }
+ | task SEMICOLON { ([$1],[]) }
+ | edges SEMICOLON specs { let (ts,dp) = $3 in (ts,$1::dp) }
+ | edges SEMICOLON { ([],[$1]) }
 
 task:
-| INT LHOOK STRING EQUAL QUOTE FL QUOTE RHOOK { {w=$6;c=1.;r=1.} }
+| INT LHOOK STRING EQUAL QUOTE FL QUOTE RHOOK { {id=1;w=$6;c=1.;r=1.} }
 
 edges:
- | EOF { [] }
- | INT ARROW INT SEMICOLON edges { ($1,$3)::$5 }
- | INT ARROW INT SEMICOLON { ($1,$3)::[] }
-
-edges:
-| { E.empty }
-| INT ARROW INT SEMICOLON edges { ($1,$3)::$5 }
+ | INT ARROW INT { ($1,$3) }

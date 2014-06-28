@@ -5,8 +5,9 @@
 rule token = parse
 | [' ' '\t' '\n'] { token lexbuf }
 | ['0'-'9']+ as lxm { INT (int_of_string lxm) }
+| ['0'-'9']+"."['0'-'9']* as s { FL (float_of_string s) }
 | "->"            { ARROW }
-| "="            { EQUAL }
+| '='            { EQUAL }
 | '{'            { LBRACE }
 | '}'            { RBRACE }
 | ';'            { SEMICOLON }
