@@ -24,6 +24,10 @@ type dag = {
 	weightSucc : float array;	(* weightSucc.(i) is the sum of the weight of all successors of tabTask.(i) *)
 }
 
+(** Type of the specification of a DAG. Can be almost converted to [dag] *)
+type spec = task list * (int * int) list
+
+
 let computeWS dag =
 	let ntasks = Array.length (dag.tabTask) in
 	let wSucc = Array.make ntasks 0. in 
