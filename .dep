@@ -1,9 +1,0 @@
-def.cmo : def.cmi
-def.cmx : def.cmi
-example.cmo : time.cmo schedule.cmo def.cmi
-example.cmx : time.cmx schedule.cmx def.cmx
-schedule.cmo : def.cmi
-schedule.cmx : def.cmx
-time.cmo : schedule.cmo def.cmi
-time.cmx : schedule.cmx def.cmx
-def.cmi :
