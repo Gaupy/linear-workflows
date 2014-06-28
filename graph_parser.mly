@@ -25,6 +25,7 @@ specs:
 
 task:
 | INT LHOOK STRING EQUAL QUOTE FL QUOTE RHOOK { {id=1;w=$6;c=1.;r=1.} }
+| INT { {id=1;w=0.;c=1.;r=1.} }
 
 edges:
  | INT ARROW INT { ($1,$3) }

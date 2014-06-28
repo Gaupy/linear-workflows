@@ -10,4 +10,4 @@ val computeWS : dag -> dag
 
 type linearWorkflow = {order : (int * bool) array; sched : (int * bool) array}
 
-type param = {lambda : float; d : float;}
+type param = {lambda : float; d : float; ntasks : int; expe_number : int; c_number : int; r_number : int;}

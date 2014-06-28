@@ -28,23 +28,22 @@ let bintree_default =
 
 let _ = 
 	let wf1 = bfs bintree_default in
-	let t1 = schedTime {lambda=0.01; d=1.} bintree_default wf1 in
+	let t1 = schedTime {lambda=0.01; d=1.; ntasks=50; expe_number=0 ; c_number=0; r_number=0;} bintree_default wf1 in
 	Printf.printf "t_bfs = %f\n" t1
 
 let _ =
 	let wf_temp = bfs bintree_default in
 	let wf2 = ckptall bintree_default wf_temp in
-	let t2 = schedTime {lambda=0.01; d=1.} bintree_default wf2 in
+	let t2 = schedTime {lambda=0.01; d=1.; ntasks=50; expe_number=0 ; c_number=0; r_number=0;} bintree_default wf2 in
 	Printf.printf "t_bfs(ck=all) = %f\n" t2
 
 
-let () = 
-	let dag = make_dag Sys.argv.(1) Sys.argv.(2) in
-	let wf_temp = bfs dag in
-	let wf2 = ckptall dag wf_temp in
-	let t2 = schedTime {lambda=0.01; d=1.} dag wf2 in
-	Printf.printf "t_bfs(ck=all) = %f\n" t2
-
+(*let () = *)
+(*	let dag = make_dag Sys.argv.(1) Sys.argv.(2) in*)
+(*	let wf_temp = bfs dag in*)
+(*	let wf2 = ckptall dag wf_temp in*)
+(*	let t2 = schedTime {lambda=0.01; d=1.; ntasks=20; expe_number=0 ; c_number=0; r_number=0;} dag wf2 in*)
+(*	Printf.printf "t_bfs(ck=all) = %f\n" t2*)
 
 
 (*let _ =*)

@@ -138,8 +138,9 @@ let schedTime param dag workflow =
 
 		
 
-	let result = ref 0. in (* We need to initiate it with the values for the first task.*)
+	let result = ref 0. in 
 	
+	(* We need to initiate it with the values for the first task.*)
 	(*BEGIN First task*)
 	let i_dag = indTaskWF2DAG workflow 0 in
 	let delta_i = if isCkptWF workflow 0 then 1. else 0. in
@@ -164,8 +165,7 @@ let schedTime param dag workflow =
 				result := !result +. tabZik.(i).(k) *. (expectedTime param w c r)
 		done
 	done;
-
-	print_workflow_expect workflow eXi;
+(*	print_workflow_expect workflow eXi;*)
 	!result
 
 

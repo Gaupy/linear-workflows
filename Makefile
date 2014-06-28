@@ -1,8 +1,7 @@
-all :
-ocamlbuild -lib unix example.byte
+all : opt
 
 opt :
-ocamlbuild -lib unix example.native
+	ocamlbuild -lib unix script.native
 
 clean :
-ocamlbuild -clean
+	ocamlbuild -clean
