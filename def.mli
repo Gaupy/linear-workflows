@@ -5,6 +5,7 @@ type edge = { id1 : int; id2 : int; }
 type dag = { tabTask : task array; sources : int list; tabParents : int list array; tabChildren : int list array; weightSucc : float array; }
 
 type spec = task list * (int * int) list
+type spec_tree = task list * (int * int) list * int
 
 val computeWS : dag -> dag
 

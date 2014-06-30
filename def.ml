@@ -26,6 +26,7 @@ type dag = {
 
 (** Type of the specification of a DAG. Can be almost converted to [dag] *)
 type spec = task list * (int * int) list
+type spec_tree = task list * (int * int) list * int
 
 
 let computeWS dag =

@@ -26,16 +26,16 @@ let bintree_default =
 		computeWS temp
 
 
-let _ = 
-	let wf1 = bfs bintree_default in
-	let t1 = schedTime {lambda=0.01; d=1.; ntasks=50; expe_number=0 ; c_number=0; r_number=0;} bintree_default wf1 in
-	Printf.printf "t_bfs = %f\n" t1
+(*let _ = *)
+(*	let wf1 = dfs bintree_default in*)
+(*	let t1 = schedTime {lambda=0.01; d=1.; ntasks=50; expe_number=0 ; c_number=0; r_number=0;} bintree_default wf1 in*)
+(*	Printf.printf "t_dfs = %f\n" t1*)
 
-let _ =
-	let wf_temp = bfs bintree_default in
-	let wf2 = ckptall bintree_default wf_temp in
-	let t2 = schedTime {lambda=0.01; d=1.; ntasks=50; expe_number=0 ; c_number=0; r_number=0;} bintree_default wf2 in
-	Printf.printf "t_bfs(ck=all) = %f\n" t2
+(*let _ =*)
+(*	let wf_temp = bfs bintree_default in*)
+(*(*	let wf2 = ckptall bintree_default wf_temp in*)*)
+(*	let t2 = schedTime {lambda=0.01; d=1.; ntasks=50; expe_number=0 ; c_number=0; r_number=0;} bintree_default wf_temp in*)
+(*	Printf.printf "t_bfs(ck=all) = %f\n" t2*)
 
 
 (*let () = *)

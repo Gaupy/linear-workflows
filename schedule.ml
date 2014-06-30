@@ -59,15 +59,18 @@ let bfs dag =
 	let current = ref 0 in (* The position of the current task in the linearization*)
 	while !current < ntasks do
 		let taskId = Queue.pop queueTBS in
-		if  snd result.sched.(taskId) then failwith "not a DAG?";
-		(* We verify whether this element can be scheduled. If it cannot we do nothing.*)
-		if (List.for_all (fun x -> snd result.sched.(x)) dag.tabParents.(taskId)) then 
+		(* We verify whether this element has already been scheduled. If it yes, we do nothing.*)
+		if snd result.sched.(taskId) then ()
+		else
 		begin
-			result.sched.(taskId) <- (!current,true);
-			result.order.(!current) <- (taskId,false);
-			List.iter (fun x-> Queue.add x queueTBS) dag.tabChildren.(taskId);
-			incr current;
+			(* We verify whether this element can be scheduled. If it cannot we do nothing.*)
+			if (List.for_all (fun x -> snd result.sched.(x)) dag.tabParents.(taskId)) then 
+			begin
+				result.sched.(taskId) <- (!current,true);
+				result.order.(!current) <- (taskId,false);
+				List.iter (fun x-> Queue.add x queueTBS) dag.tabChildren.(taskId);
+				incr current;
+			end
 		end
 	done;
-	if not (Queue.is_empty queueTBS) then failwith "not a DAG?";
 	result
