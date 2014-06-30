@@ -9,7 +9,6 @@ let assignWCR_tree config task =
 
 let spec_to_tree config sp =
 	let tasks, edges, ntasks = sp in
-	printf " ntasks= %d" ntasks;
 	let tabTaskInit = Array.make ntasks {id=0;w=1.;c=1.;r=1.} in
 	let tabParentsInit = Array.make ntasks [] in
 	let tabChildrenInit = Array.make ntasks [] in
@@ -19,7 +18,7 @@ let spec_to_tree config sp =
 	in List.iter assign_wcr tasks;
 	(* Then we create the edges whose weight is known *)
 	let assign_edges (e1,e2) =
-		if e1 = ntasks - 1 - e2 then printf "attention\n";
+		if e1 = ntasks - e2 then printf "attention\n";
 		if e1 = 0 then ()
 		else
 			(tabParentsInit.(ntasks - 1 - e2)<- e1 -1 :: tabParentsInit.(ntasks - 1 - e2) ; 

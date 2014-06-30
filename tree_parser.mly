@@ -14,7 +14,7 @@
 
 parse:
 | INT NEWLINE parse { $3 }
-| line parse  { let a, (b1,b2), c = $1 and d, e, f = $2 in ({id=f ; w = a.w ; c=1.;r=1.}::d, (b2, f)::e, f+1) }
+| line parse  { let a, (b1,b2), c = $1 and d, e, f = $2 in ({id=f ; w = a.w ; c=1.;r=1.}::d, (b1, f)::e, f+1) }
 | NEWLINE parse {$2}
 | EOF {([],[],0)}
 
