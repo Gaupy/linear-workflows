@@ -51,6 +51,7 @@ let dfs dag =
 	result
 
 
+
 let bfs dag =
 	let ntasks = Array.length dag.tabTask in
 	let result = {order = Array.make ntasks (-1,false); sched = Array.make ntasks (-1,false)} in
@@ -74,3 +75,29 @@ let bfs dag =
 		end
 	done;
 	result
+
+let random_fs dag =
+	let ntasks = Array.length dag.tabTask in
+	let result = {order = Array.make ntasks (-1,false); sched = Array.make ntasks (-1,false)} in
+	let current = ref 0 in (* The position of the current task in the linearization*)
+	let avail = ref (List.length dag.sources) in
+	let avail_list = ref dag.sources in
+
+	while !avail > 0 do
+		let rand_avail_id = Random.int !avail in
+		let taskId = List.nth !avail_list rand_avail_id in
+		if (snd result.sched.(taskId) || (fst result.order.(!current)) >= 0) then failwith "already scheduled";
+		result.sched.(taskId) <- (!current, true);
+		result.order.(!current) <- (taskId , false);
+		incr current;
+		decr avail;	
+		let add_child tId =
+			if (List.for_all (fun x -> snd result.sched.(x)) dag.tabParents.(tId)) then 
+				(incr avail; avail_list := tId :: !avail_list)
+		in
+			List.iter add_child dag.tabChildren.(taskId)
+	done;
+	if !current <> ntasks then (Printf.printf "Not everyone has been scheduled: %d." !current; failwith "\n") ; 
+	result
+
+

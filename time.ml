@@ -14,21 +14,21 @@ let expectedTime param w c r =
 		exp (lambda *. r) *. (1. /. lambda +. (expect d)) *. (exp (lambda*. (w +. c)) -. 1.)
 
 
-let rec traverse dag workflow l i k tabDone ant_k =	(* l,i,k are the (l,i,k)th tasks in the order of the workflow! ant_k is a bool that is considering the special case where we are studying a needed predecessor of k.*)
+let rec traverse dag workflow l i k tabDoneK ant_k =	(* l,i,k are the (l,i,k)th tasks in the order of the workflow! ant_k is a bool that is considering the special case where we are studying a needed predecessor of k.*)
 	let ntasks = Array.length dag.tabTask in
 	let ldag = indTaskWF2DAG workflow l in
-	match tabDone.(i).(k).(l) with
+	match tabDoneK.(i).(l) with
 		| -1 -> 
 		begin
 			for r = i+1 to ntasks - 1 do
-				tabDone.(r).(k).(l) <- 0;
+				tabDoneK.(r).(l) <- 0;
 			done;
 			if l < k then
 				begin
-					if isCkptWF workflow l then (tabDone.(i).(k).(l) <- (if ant_k then 3 else 2))
-					else (tabDone.(i).(k).(l) <- (if ant_k then 3 else 1); List.iter (fun x -> traverse dag workflow (indTaskDAG2WF workflow x) i k tabDone ant_k) dag.tabParents.(ldag))
+					if isCkptWF workflow l then (tabDoneK.(i).(l) <- (if ant_k then 3 else 2))
+					else (tabDoneK.(i).(l) <- (if ant_k then 3 else 1); List.iter (fun x -> traverse dag workflow (indTaskDAG2WF workflow x) i k tabDoneK ant_k) dag.tabParents.(ldag))
 				end
-			else (tabDone.(i).(k).(l) <- 0)
+			else (tabDoneK.(i).(l) <- 0)
 		end
 		| 0 | 1 | 2 | 3 -> ()
 		| _ -> failwith "should never happen"
@@ -37,28 +37,23 @@ let rec traverse dag workflow l i k tabDone ant_k =	(* l,i,k are the (l,i,k)th t
 
 let findWikRik dag workflow k = (*k is the kth task in the order of the workflow!*)
 	let ntasks = Array.length dag.tabTask in
-	let tabDone = Array.make_matrix ntasks ntasks (Array.make ntasks (-1)) in
-	(*First we need to initialize tabDone.*)
-	for i = 0 to ntasks -1 do
-		for j = 0 to ntasks -1 do
-			tabDone.(i).(j) <- Array.make ntasks (-1)
-		done
-	done;
+	let tabDoneK = Array.make_matrix ntasks ntasks (-1) in
+	(*First we need to initialize tabDoneK.*)
 	let wk = Array.make ntasks 0. in
 	let rk = Array.make ntasks 0. in
 	for r = k+1 to ntasks -1 do
-		tabDone.(r).(k).(k) <- 0 (* there is a failure during the execution of k, but k was executed successfully *)
+		tabDoneK.(r).(k) <- 0 (* there is a failure during the execution of k, but k was executed successfully *)
 	done;
 	for i = k to ntasks -1 do
-		List.iter (fun x -> traverse dag workflow (indTaskDAG2WF workflow x) i k tabDone (i = k)) dag.tabParents.(indTaskWF2DAG workflow i);
+		List.iter (fun x -> traverse dag workflow (indTaskDAG2WF workflow x) i k tabDoneK (i = k)) dag.tabParents.(indTaskWF2DAG workflow i);
 		for j = 0 to k-1 do
-			match tabDone.(i).(k).(j) with
+			match tabDoneK.(i).(j) with
 				| 1 -> (wk.(i) <- wk.(i) +. dag.tabTask.(indTaskWF2DAG workflow j).w)(*; printf "i=%d-j=%d\n" i j*)
 				| 2 -> (rk.(i) <- rk.(i) +. dag.tabTask.(indTaskWF2DAG workflow j).r)
 				| _ -> () (*this means that this task is not a needed predecessor.*)
 		done;
 (*	printf "\n\ntab : %d \n" i;*)
-(*	print_matrix tabDone.(i);*)
+(*	print_matrix tabDoneK.(i);*)
 	done;
 	wk,rk
 
