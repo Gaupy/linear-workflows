@@ -10,8 +10,13 @@ let sizeDAG config =
 let assignWCR config task =
 	let i = task.id in 
     match task.w,config.c_number, config.r_number with
-      | 0.,_,_ -> ({id=i;w=5.;c=1.;r=1.})
-      | _,_,_ -> ({id=i;w=task.w;c=1.;r=1.})
+      | 0.,0,_ -> ({id=i;w=5.;c=0.5;r= 0.5})
+      | 0.,_,_ -> ({id=i;w=5.;c=(float_of_int config.c_number);r=(float_of_int config.c_number)})
+      | _,0,_ -> ({id=i;w=task.w;c=0.1*. task.w;r= 0.1*. task.w})
+      | _,a,_ -> 
+      	if a > 0 
+      	  then ({id=i;w=task.w;c=(float_of_int config.c_number);r=(float_of_int config.c_number)}) 
+      	  else let value = Random.float (float_of_int (-a)) in ({id=i;w=task.w ; c=value ; r= value})
 
 
 
