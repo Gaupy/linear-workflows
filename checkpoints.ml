@@ -41,9 +41,26 @@ let ckptper dag workflow nckpt =
 					temp := 0.;
 (*				incr cptr*)
 				end
+			else
+				workflow.order.(i) <- (fst workflow.order.(i), false);
 	done;
 (*	printf "nreal : %d\t" !cptr;*)
 	workflow
+
+
+
+let compareW dag task1 task2 =
+	compare (task2.w) (task1.w)
+
+let compareC dag task1 task2 =
+	compare (task1.c) (task2.c)
+
+let compareD dag task1 task2 =
+	compare (dag.weightSucc.(task2.id)) (dag.weightSucc.(task1.id))
+
+let compareWCD dag task1 task2 =
+	compare (task2.w *. (dag.weightSucc.(task2.id)) /. task2.c) (task1.w *. dag.weightSucc.(task1.id) /. task1.w)
+
 
 
 let ckptsort dag workflow nckpt compare_fun =
@@ -53,11 +70,14 @@ let ckptsort dag workflow nckpt compare_fun =
 		array_sorted.(i) <- dag.tabTask.(i)
 	done;
 	Array.fast_sort (compare_fun) array_sorted;
-
 	let nckpt_nobug = min (int_of_float nckpt) ntasks in 
 	for i = 0 to nckpt_nobug - 1 do
-		let i_wf = indTaskDAG2WF workflow i in
+		let i_wf = indTaskDAG2WF workflow (array_sorted.(i).id) in
 		workflow.order.(i_wf) <- (fst workflow.order.(i_wf),true)
+	done;
+	for i = nckpt_nobug to ntasks - 1 do
+		let i_wf = indTaskDAG2WF workflow (array_sorted.(i).id) in
+		workflow.order.(i_wf) <- (fst workflow.order.(i_wf),false)
 	done;
 	(*	printf "nreal : %d\t" !cptr;*)
 	workflow
