@@ -76,6 +76,15 @@ let bfs dag =
 	done;
 	result
 
+let removenth l n =
+  let rec aux_removenth l1 l2 m =
+    match l2 with
+      | a :: q -> if m = 0 then (List.rev_append l1 q, a) else aux_removenth (a::l1) q (m-1)
+      | _ -> failwith "list should not be empty"
+  in 
+  aux_removenth [] l n
+
+
 let random_fs dag =
 	let ntasks = Array.length dag.tabTask in
 	let result = {order = Array.make ntasks (-1,false); sched = Array.make ntasks (-1,false)} in
@@ -85,7 +94,8 @@ let random_fs dag =
 
 	while !avail > 0 do
 		let rand_avail_id = Random.int !avail in
-		let taskId = List.nth !avail_list rand_avail_id in
+		let new_list, taskId = removenth !avail_list rand_avail_id in
+		avail_list := new_list;
 		if (snd result.sched.(taskId) || (fst result.order.(!current)) >= 0) then failwith "already scheduled";
 		result.sched.(taskId) <- (!current, true);
 		result.order.(!current) <- (taskId , false);
@@ -93,7 +103,7 @@ let random_fs dag =
 		decr avail;	
 		let add_child tId =
 			if (List.for_all (fun x -> snd result.sched.(x)) dag.tabParents.(tId)) then 
-				(incr avail; avail_list := tId :: !avail_list)
+				(incr avail; avail_list := tId :: !avail_list ; )
 		in
 			List.iter add_child dag.tabChildren.(taskId)
 	done;
