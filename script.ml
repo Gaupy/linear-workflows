@@ -33,8 +33,9 @@ let parse_config file =
 
 let make_graph config dagfile =
 	match config.expe_number with 
-		| 0 -> make_tree config dagfile
-		| _ -> make_dag config dagfile
+(*		| 0 -> make_tree config dagfile*)
+(*		| 1 -> make_dag config dagfile*)
+		| _ -> make_pegasus config dagfile
 
 
 
