@@ -48,11 +48,11 @@ let spec_to_dag config sp =
 	computeWS temp
 
 let spec_to_dagP config sp =
-	let ntasks = sizeDAG config in
+	let tasks, edges = sp in
+	let ntasks = List.length tasks in
 	let tabTaskInit = Array.make ntasks {id=0;w=0.;c=0.;r=0.} in
 	let tabParentsInit = Array.make ntasks [] in
 	let tabChildrenInit = Array.make ntasks [] in
-	let tasks, edges = sp in
 	(* First we create the tasks whose weight is known *)
 	let rec assign_wcr listoftasks i =
 		if i < 0 then ()
