@@ -7,7 +7,7 @@ open Tools
 open Schedule
 open Checkpoints
 open Time
-open Example
+(*open Example*)
 
 let () = Random.self_init ()
 
@@ -40,7 +40,7 @@ let make_graph config dagfile =
 
 
 let script_facto_simu config dag =
-  let ntasks = config.ntasks in
+  let ntasks = Array.length dag.tabTask in
   let tab_sched_fun = Array.make 3 (bfs) in
   	tab_sched_fun.(1) <- dfs;
   	tab_sched_fun.(2) <- random_fs;
@@ -105,13 +105,14 @@ let script paramfile dagfile =
     | _ -> 
       begin
         let tab_result,tab_names = script_facto_simu config dag in
-        printf "\t\t\tbfs\t\t\tdfs\t\t\trfs\n";
+(*        printf "\t\t\tbfs\t\t\tdfs\t\t\trfs\n";*)
+        printf "%f\t" (total_weight dag);
         for j = 0 to 6 do
-          printf "%s \t" tab_names.(j);
+(*          printf "%s \t" tab_names.(j);*)
           for i = 0 to 2 do
             printf "(%f , %d)\t" (fst tab_result.(i).(j)) (snd tab_result.(i).(j));
           done;
-          printf "\n";
+(*          printf "\n";*)
         done;
         printf "\n"
       end

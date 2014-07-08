@@ -27,46 +27,53 @@ case $1 in
 	0) #one tree
 	./script.native param_$1_$2_$3_$5_$6_$7_$8_$9_${10} example_files/dump.1.4.amd.Lin.Lin-1213.tree
 	;;
-	1) #graphs are gnp
-	for iter in `seq 1 ${11}`; do
-		r=$(echo "$4+${iter}*10" | bc) #changing random seed for all generation
-		GSL_RNG_SEED=$r ggen -l=0 generate-graph gnp $5 $7 | GSL_RNG_TYPE=ranlux GSL_RNG_SEED=$r ggen -l=0 add-property exponential $8 > dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
-		./script.native param_$1_$2_$3_$5_$6_$7_$8_$9_${10} dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
+	1)
+	for iter in `seq 0 19`; do 
+		python pegasus_parser.py SyntheticWorkflows/MONTAGE/MONTAGE.n.$5.${iter}.dax > MONTAGE.n.$5.${iter}.dag
+		./script.native param_$1_$2_$3_$5_$6_$7_$8_$9_${10} MONTAGE.n.$5.${iter}.dag >> results/MONTAGE_$2_$9_${10}.results
+		rm MONTAGE.n.$5.${iter}.dag
 	done
+	;;
+#	1) #graphs are gnp
+#	for iter in `seq 1 ${11}`; do
+#		r=$(echo "$4+${iter}*10" | bc) #changing random seed for all generation
+#		GSL_RNG_SEED=$r ggen -l=0 generate-graph gnp $5 $7 | GSL_RNG_TYPE=ranlux GSL_RNG_SEED=$r ggen -l=0 add-property exponential $8 > dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
+#		./script.native param_$1_$2_$3_$5_$6_$7_$8_$9_${10} dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
+#	done
+##	rm dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag param_$1_$2_$3_$5_$6_$7_$8_$9_${10}
+#	;;
+#	2) #graphs are gnm
+#	for iter in `seq 1 ${11}`; do
+#		r=$(echo "$4+${iter}*10" | bc) #changing random seed for all generation
+#		GSL_RNG_TYPE=ranlux GSL_RNG_SEED=$r ggen -l=0 generate-graph gnm $5 $6 | GSL_RNG_TYPE=ranlux GSL_RNG_SEED=$r ggen -l=0 add-property exponential $8 > dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
+#		./script.native  param_$1_$2_$3_$5_$6_$7_$8_$9_${10} dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
+#	done
 #	rm dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag param_$1_$2_$3_$5_$6_$7_$8_$9_${10}
-	;;
-	2) #graphs are gnm
-	for iter in `seq 1 ${11}`; do
-		r=$(echo "$4+${iter}*10" | bc) #changing random seed for all generation
-		GSL_RNG_TYPE=ranlux GSL_RNG_SEED=$r ggen -l=0 generate-graph gnm $5 $6 | GSL_RNG_TYPE=ranlux GSL_RNG_SEED=$r ggen -l=0 add-property exponential $8 > dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
-		./script.native  param_$1_$2_$3_$5_$6_$7_$8_$9_${10} dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
-	done
-	rm dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag param_$1_$2_$3_$5_$6_$7_$8_$9_${10}
-	;;
-	3) #graphs are fifo
-	for iter in `seq 1 ${11}`; do
-		r=$(echo "$4+${iter}*10" | bc) #changing random seed for all generation
-		GSL_RNG_TYPE=ranlux GSL_RNG_SEED=$r ggen -l=0 generate-graph fifo $5 $6 $7 | GSL_RNG_TYPE=ranlux GSL_RNG_SEED=$r ggen -l=0 add-property exponential $8 > dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
-		./script.native  param_$1_$2_$3_$5_$6_$7_$8_$9_${10} dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
-	done
-	rm dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag param_$1_$2_$3_$5_$6_$7_$8_$9_${10}
-	;;
-	4) #graphs are lbl
-	for iter in `seq 1 ${11}`; do
-		r=$(echo "$4+${iter}*10" | bc) #changing random seed for all generation
-		GSL_RNG_TYPE=ranlux GSL_RNG_SEED=$r ggen -l=0 generate-graph lbl $5 $6 $7 | GSL_RNG_TYPE=ranlux GSL_RNG_SEED=$r ggen -l=0 add-property exponential $8 > dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
-		./script.native  param_$1_$2_$3_$5_$6_$7_$8_$9_${10} dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
-	done
-	rm dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag param_$1_$2_$3_$5_$6_$7_$8_$9_${10}
-	;;
-	5) #graphs are ro
-	for iter in `seq 1 ${11}`; do
-		r=$(echo "$4+${iter}*10" | bc) #changing random seed for all generation
-		GSL_RNG_TYPE=ranlux GSL_RNG_SEED=$r ggen -l=0 generate-graph ro $5 $6 | GSL_RNG_TYPE=ranlux GSL_RNG_SEED=$r ggen -l=0 add-property exponential $8 > dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
-		./script.native  param_$1_$2_$3_$5_$6_$7_$8_$9_${10} dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
-	done
-	rm dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag param_$1_$2_$3_$5_$6_$7_$8_$9_${10}
-	;;
+#	;;
+#	3) #graphs are fifo
+#	for iter in `seq 1 ${11}`; do
+#		r=$(echo "$4+${iter}*10" | bc) #changing random seed for all generation
+#		GSL_RNG_TYPE=ranlux GSL_RNG_SEED=$r ggen -l=0 generate-graph fifo $5 $6 $7 | GSL_RNG_TYPE=ranlux GSL_RNG_SEED=$r ggen -l=0 add-property exponential $8 > dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
+#		./script.native  param_$1_$2_$3_$5_$6_$7_$8_$9_${10} dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
+#	done
+#	rm dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag param_$1_$2_$3_$5_$6_$7_$8_$9_${10}
+#	;;
+#	4) #graphs are lbl
+#	for iter in `seq 1 ${11}`; do
+#		r=$(echo "$4+${iter}*10" | bc) #changing random seed for all generation
+#		GSL_RNG_TYPE=ranlux GSL_RNG_SEED=$r ggen -l=0 generate-graph lbl $5 $6 $7 | GSL_RNG_TYPE=ranlux GSL_RNG_SEED=$r ggen -l=0 add-property exponential $8 > dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
+#		./script.native  param_$1_$2_$3_$5_$6_$7_$8_$9_${10} dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
+#	done
+#	rm dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag param_$1_$2_$3_$5_$6_$7_$8_$9_${10}
+#	;;
+#	5) #graphs are ro
+#	for iter in `seq 1 ${11}`; do
+#		r=$(echo "$4+${iter}*10" | bc) #changing random seed for all generation
+#		GSL_RNG_TYPE=ranlux GSL_RNG_SEED=$r ggen -l=0 generate-graph ro $5 $6 | GSL_RNG_TYPE=ranlux GSL_RNG_SEED=$r ggen -l=0 add-property exponential $8 > dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
+#		./script.native  param_$1_$2_$3_$5_$6_$7_$8_$9_${10} dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag
+#	done
+#	rm dag_$1_$2_$3_$5_$6_$7_$8_$9_${10}.dag param_$1_$2_$3_$5_$6_$7_$8_$9_${10}
+#	;;
 	* ) 
 	echo "You have tried an expe_number that is not yet implemented."
 	;;

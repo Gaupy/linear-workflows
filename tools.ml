@@ -20,6 +20,14 @@ let indTaskDAG2WF workflow i =
 		fst workflow.sched.(i)
 
 
+let total_weight dag =
+	let ntasks = Array.length dag.tabTask in
+	let weight = ref 0. in
+	for i = 0 to ntasks -1 do
+		weight := !weight +. dag.tabTask.(i).w
+	done;
+	!weight
+
 
 (* DEBUG TOOLS *)
 
