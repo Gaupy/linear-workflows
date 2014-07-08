@@ -9,6 +9,6 @@ for j in joblist :
 	print s
 for c in edgelist :
 	for p in c.childNodes :
-		if p.localName=='parent':
+		if p.localName=='parent' :
 			s = c.attributes['ref'].value + ' ' + p.attributes['ref'].value
-    		print s
+			print s
