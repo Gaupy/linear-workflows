@@ -28,8 +28,13 @@ case $1 in
 	./script.native param_$1_$2_$3_$5_$6_$7_$8_$9_${10} example_files/dump.1.4.amd.Lin.Lin-1213.tree
 	;;
 	1)
-	for name in MONTAGE LIGO GENOME SIPHT CYBERSHAKE; do
-			./scripts/sub.sh $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${name} &
+	for name in MONTAGE LIGO GENOME CYBERSHAKE; do
+			./scripts/proc.sh $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${name} &
+	done
+	;;
+	2)
+	for name in MONTAGE LIGO GENOME CYBERSHAKE; do
+			./scripts/lambda.sh $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${name} &
 	done
 	;;
 #	1) #graphs are gnp
