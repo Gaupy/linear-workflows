@@ -1,6 +1,6 @@
 open Arg
 type param = {
-	lambda : float;
+	lambda : string;
 	d : float;
 	ntasks : int;
 	expe_number : int; (* What we want to plot *)
