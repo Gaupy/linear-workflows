@@ -13,6 +13,7 @@ let assignWCR config task =
       | 0.,0,_ -> ({id=i;w=5.;c=0.5;r= 0.5})
       | 0.,_,_ -> ({id=i;w=5.;c=(float_of_int config.c_number);r=(float_of_int config.c_number)})
       | _,0,_ -> ({id=i;w=task.w;c=0.1*. task.w;r= 0.1*. task.w})
+      | _,1,_ -> ({id=i;w=task.w;c=0.01*. task.w;r= 0.01*. task.w})
       | _,a,_ -> 
       	if a > 0 
       	  then ({id=i;w=task.w;c=(float_of_int config.c_number);r=(float_of_int config.c_number)}) 

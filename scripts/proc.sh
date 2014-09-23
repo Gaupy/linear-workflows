@@ -1,5 +1,5 @@
 name=${12}
-for p in 50 100 200 300 400 500 600 700 800 900 1000; do 
+for p in 50 100 200 300 400 500 600 700; do 
 	echo "begin ${p} ${name}"
 	if [ -f results/${name}_$2_${p}_$9_${10}.results ]; then
 		echo "Tests have already been done"
