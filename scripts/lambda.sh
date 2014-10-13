@@ -1,6 +1,6 @@
 name=${12}
 p=${5}
-for lambda in 0.0000005 0.000001 0.000005 0.00001 0.00005 0.0001 0.0005 0.001 0.005 0.01; do
+for lambda in  0.000005 0.00001 0.00005 0.0001 0.0003 0.0005 0.0007 0.001 0.003 0.005 0.007 0.01; do
 	echo "begin ${lambda} ${name}"
 	if [ -f results/${name}_$2_${p}_${lambda}_${10}.results ]; then
 		echo "Tests have already been done"
