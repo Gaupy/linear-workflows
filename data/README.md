@@ -12,8 +12,8 @@ where:
 * $c should be: 
 	- 0 if the checkpoint time is proportionnal (0.1 times) to the execution time of the task
 	- 1 if the checkpoint time is proportionnal (0.01 times) to the execution time of the task
-	- x < 0 if the checkpoint time is a random number between 0 and -x for all tasks
-	- x > 0 if the checkpoint time is x for all tasks
+	- x -lt 0 if the checkpoint time is a random number between 0 and -x for all tasks
+	- x -gt 0 if the checkpoint time is x for all tasks
 
 * $n is the number of tasks
 
